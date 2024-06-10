@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: Archivo actual",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${file}",
+        "console": "internalConsole",
+        "justMyCode": false,
+        "args": [
+          "user",
+          "pass",
+          "TODOS"
+        ],
+        "env": {
+          "ENCRYPT_KEY": "VOAR_9XddvzqKNFeLYZCq0fOx44TMS9m0toyV1rbjpw=",
+          "LOGLEVEL": "DEBUG",
+          "ENVIRONMENT": "dev",
+          "MONGODB_HOST": "localhost:27017",
+          "USERMONGO": "mongo-shuttle",
+          "PASSMONGO": "OKfdPrXcMgGnpDbG",
+          "DATABASE": "mongo_shuttle",
+          "APP_NAME": "shuttle-openshift-front-dump",
+        }
+      }
+    ]
+  }
