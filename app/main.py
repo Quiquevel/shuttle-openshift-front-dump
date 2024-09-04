@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 import asyncio
 import urllib3
 from functions.javadump import do_dump_project
@@ -19,14 +18,13 @@ st.set_page_config(
  
 async def get_data_api():
     styles = {
-        #"container": {"margin": "0px !important", "padding": "0!important", "align-items": "stretch", "background-color": "#fafafa"},
+        "container": {"margin-top": "0px !important", "padding": "0!important", "align-items": "stretch", "background-color": "#fafafa"},
         #"icon": {"color": "black", "font-size": "0px"}, 
-        "nav-link": {"font-size": "20px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link": {"font-size": "20px", "text-align": "left", "margin-top":"0px", "--hover-color": "#eee"},
         #"nav-link-selected": {"background-color": "lightblue", "font-size": "20px", "font-weight": "normal", "color": "black"}
         }
 
     do_dump_project()
-
 
 if __name__ == "__main__":
     #main()
