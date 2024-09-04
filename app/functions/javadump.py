@@ -13,7 +13,7 @@ def do_dump_project():
     idToken = st_javascript("localStorage.getItem('idToken');")
     ldap = st_javascript("localStorage.getItem('ldap');")
 
-    st.markdown('## 🚨 JAVA Dump')
+    st.markdown('## 🚨 JAVA Dump 🚨')
 
     optioncluster = None
     optionregion = None
@@ -29,33 +29,30 @@ def do_dump_project():
     with col1:
         match optionenv:
             case 'pro':
-                optioncluster = st.selectbox('Select Cluster', ('','prodarwin', 'dmzbdarwin', 'azure', 'confluent', 'dmz2bmov', 'probks','dmzbbks'),key = "optioncluster1")
+                optioncluster = st.selectbox('Select Cluster', ('','prodarwin', 'dmzbdarwin', 'azure', 'confluent', 'dmz2bmov', 'probks', 'dmzbbks', 'dmzbazure', 'ocp05azure'),key = "optioncluster1")
             case 'pre':
-                optioncluster = st.selectbox('Select Cluster', ('','azure', 'bks'),key = "optioncluster1")
+                optioncluster = st.selectbox('Select Cluster', ('','azure', 'bks', 'ocp05azure'),key = "optioncluster1")
             case 'dev':
-                  optioncluster = st.selectbox('Select Cluster', ('','azure', 'bks'),key = "optioncluster1")
-
+                  optioncluster = st.selectbox('Select Cluster', ('','azure', 'bks', 'ocp05azure'),key = "optioncluster1")
 
     with col2:
         match optionenv:
             case 'dev':
-                if optioncluster == 'azure':
-                            optionregion = st.selectbox('Select Region', ('', 'weu1'),key = "optioncluster2")
-
-                if optioncluster != 'azure':
-                    optionregion = st.selectbox('Select Region', ('', 'bo1'),key = "optioncluster3")        
+                if 'azure' in optioncluster:
+                    optionregion = st.selectbox('Select Region', ('', 'weu1'), key="optioncluster2")
+                else:
+                    optionregion = st.selectbox('Select Region', ('', 'bo1'), key="optioncluster3")
             case _:
-                if optioncluster == 'azure':
-                            optionregion = st.selectbox('Select Region', ('','weu1', 'weu2'),key = "optioncluster2")
-
-                if optioncluster != 'azure':
-                    optionregion = st.selectbox('Select Region', ('','bo1', 'bo2'),key = "optioncluster3")
+                if optioncluster in ['azure', 'dmzbazure', 'ocp05azure']:
+                    optionregion = st.selectbox('Select Region', ('', 'weu1', 'weu2'), key="optioncluster2")
+                else:
+                    optionregion = st.selectbox('Select Region', ('', 'bo1', 'bo2'), key="optioncluster3")
 
     with col3:
         if optioncluster != '' and optionregion != '':
             json_object_namespace = tokenparameter(env=optionenv, cluster=optioncluster,region=optionregion,do_api='namespacelist',idToken=idToken,ldap=ldap)
             if json_object_namespace is not None:
-                # split namespace list
+                # split namespace list.
                 flat_list = [x for x in json_object_namespace]
                 selectnamespace = st.selectbox('Select Namespace', ([''] + flat_list),key = "selectnamespace1")
                 with col1:
@@ -87,7 +84,6 @@ def do_dump_project():
                                                         if execute_button:
                                                             try:
                                                                 get_jvm_dump(optionenv, optioncluster, optionregion, selectnamespace, selectpod, 'heapdump_datagrid', delete, idToken, ldap)
-
                                                             except Exception as e:
                                                                 st.write(f'Error downloading file: {e}')
 
@@ -96,7 +92,6 @@ def do_dump_project():
                                                         if execute_button:
                                                             try:
                                                                 get_jvm_dump(optionenv, optioncluster, optionregion, selectnamespace, selectpod, 'threaddump', delete, idToken, ldap)
-
                                                             except Exception as e:
                                                                 st.write(f'Error downloading file: {e}')
 
@@ -105,7 +100,6 @@ def do_dump_project():
                                                         if execute_button:
                                                             try:
                                                                 get_jvm_dump(optionenv, optioncluster, optionregion, selectnamespace, selectpod, 'threaddump_datagrid', delete, idToken, ldap)
-
                                                             except Exception as e:
                                                                 st.write(f'Error downloading file: {e}')
     st.text('')
