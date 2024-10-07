@@ -2,6 +2,7 @@ import streamlit as st
 from functions.utils import tokenparameter, get_jvm_dump
 import datetime
 from streamlit_javascript import st_javascript
+from functions.dyna import getDynaProblems, getSwitchStatus
 
 def get_date():
   now = datetime.datetime.now()
@@ -14,7 +15,7 @@ def do_dump_project():
     ldap = st_javascript("localStorage.getItem('ldap');")
 
     st.markdown('## 🚨 JAVA Dump 🚨')
-
+    
     optioncluster = None
     optionregion = None
 
@@ -34,6 +35,21 @@ def do_dump_project():
                 optioncluster = st.selectbox('Select Cluster', ('','azure', 'bks', 'ocp05azure'),key = "optioncluster1")
             case 'dev':
                   optioncluster = st.selectbox('Select Cluster', ('','azure', 'bks', 'ocp05azure'),key = "optioncluster1")
+
+    #PRUEBA DE INTEGRACION CON DYNA
+    timedyna = "now-30m"
+    switchednamespaces = getSwitchStatus(optioncluster)
+    st.title("Dynatrace Problems Viewer")
+
+    # Obtener problemas abiertos de Dynatrace
+    problems = st.experimental_singleton(getDynaProblems(timedyna=timedyna,switchednamespaces=switchednamespaces))  # Para cachear la lista de problemas
+
+    if problems:
+        selected_problem = st.selectbox("Select an open problem", problems)
+        st.write(f"Selected Problem: {selected_problem}")
+    else:
+        st.write("No open problems found.")
+    #FIN INTEGRACION DYNA
 
     with col2:
         match optionenv:
