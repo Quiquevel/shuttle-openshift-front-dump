@@ -31,6 +31,7 @@ dynaVariables = {
 dynaVariablesKeys = ["onpremise", "saas"]
 for key in dynaVariablesKeys:
     dynaVariables[key]["urlbasepagesize"] = dynaVariables[key]["urlbaseapi"] + "?nextPageKey="
+    #dynaVariables[key]["urlbasepagesize"] = dynaVariables[key]["urlbaseapi"]
     dynaVariables[key]["headers"] = {"Authorization": "Api-Token " + dynaVariables[key]["token"], "Accept": "application/json; charset=utf-8"}
 
 def getEnvironmentsClustersList(entityID):
